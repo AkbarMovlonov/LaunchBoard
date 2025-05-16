@@ -7,8 +7,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <aside class="sidebar">
       <h1>PROWEB</h1>
       <nav>
-        <RouterLink to="/">🚀 Запуски</RouterLink>
-        <RouterLink to="/about">👤Обо мне</RouterLink>
+        <RouterLink to="/">Запуски</RouterLink>
+        <RouterLink to="/about">Обо мне</RouterLink>
       </nav>
     </aside>
     <main class="main-content">
@@ -21,12 +21,15 @@ import { RouterLink, RouterView } from 'vue-router'
 .app-layout {
   display: flex;
   height: 100vh;
+  font-family: 'Inter', sans-serif;
 }
 
 .sidebar {
   min-width: 200px;
-  background-color: #f5f5f5;
+  background-color: #f9faf5;
   padding: 20px;
+  font-size: 16px;
+  border-right: 1px solid #ccc;
 }
 
 .sidebar nav {

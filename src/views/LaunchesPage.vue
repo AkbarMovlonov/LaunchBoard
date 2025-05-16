@@ -126,14 +126,14 @@ function stopDragScroll() {
 <template>
   <div class="page">
     <main class="main">
-      <h2 class="section-title">Запуски</h2>
+      <h2 class="title">Запуски</h2>
 
-      <div v-if="launchesStore.isLoading" class="section-title">Загрузка...</div>
-      <div v-else-if="launchesStore.error" class="section-title error">
+      <div v-if="launchesStore.isLoading" class="title">Загрузка...</div>
+      <div v-else-if="launchesStore.error" class="title error">
         Ошибка: {{ launchesStore.error }}
       </div>
 
-      <div class="categories">
+      <div class="categories title">
         <h2>Категории</h2>
         <button
           v-for="category in launchesStore.allCategories"
@@ -208,14 +208,18 @@ function stopDragScroll() {
 
 .main {
   flex: 1;
-  padding: 20px;
+}
+
+.title {
+  border-bottom: 1px solid #ccc;
+  font-size: 20px;
+  padding: 15px 10px;
 }
 
 .categories {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
 }
 
 .category {
