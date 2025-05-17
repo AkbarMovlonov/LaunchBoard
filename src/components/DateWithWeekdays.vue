@@ -15,7 +15,8 @@ const props = defineProps({
   },
   days: {
     type: Array,
-    required: true,
+    required: false,
+    default: null,
   },
 })
 
@@ -31,7 +32,11 @@ const formattedDate = computed(() => {
 })
 
 const formattedWeekdays = computed(() => {
-  if (!Array.isArray(props.days) || props.days.length === 0) return ''
-  return props.days.map((day) => weekdaysMap[day % 7]).join(', ')
+  if (props.days && props.days.length > 0) {
+    return props.days.map((day) => weekdaysMap[day % 7]).join(', ')
+  }
+  // Fallback to weekday of the date itself
+  const dateObj = new Date(props.date)
+  return weekdaysMap[dateObj.getDay()]
 })
 </script>

@@ -35,7 +35,7 @@
 
 <style scoped>
 .about-wrapper {
-  width: 100%;
+  width: calc(100vw - 200px);
   font-family: 'Inter', sans-serif;
   color: #000;
 }

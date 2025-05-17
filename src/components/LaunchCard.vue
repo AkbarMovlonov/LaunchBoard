@@ -14,7 +14,7 @@
 
     <CardSection title="Открытые уроки" isLessons>
       <template v-for="(times, date) in groupItemsByDate(launch.open_lessons)" :key="date">
-        <DateWithWeekdays :date="date" :days="[getWeekdayLabel(date)]" />
+        <DateWithWeekdays :date="date" />
         <TimeColumn :times="times" />
       </template>
     </CardSection>
@@ -78,6 +78,8 @@ const props = defineProps({
   padding: 12px;
   display: flex;
   flex-direction: column;
+  background: #fff;
+  border-radius: 10% 10% 0% 0%;
 }
 
 .start-time {
