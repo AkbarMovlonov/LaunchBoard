@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useLaunchesStore } from '@/stores/launchesStore'
 import LaunchCard from '@/components/LaunchCard.vue'
 import CategoryFilter from '@/components/CategoryFilter.vue'
+import SkeletonCard from '@/components/ui/Skeleton.vue'
 
 // Import utilities
 import { getWeekdayLabel } from '@/utils/dateUtils'
@@ -20,24 +21,18 @@ const route = useRoute()
 const boardRef = ref(null)
 const { addScrollListeners, removeScrollListeners } = enableHorizontalScroll(boardRef)
 
-// Watch route to load or clear launches
-watch(
-  () => route.path,
-  (newPath) => {
-    if (newPath === '/') launchesStore.loadLaunches()
-    else launchesStore.clearLaunches()
-  },
-  { immediate: true },
-)
-
 // Lifecycle for scroll listeners
 onMounted(() => {
+  launchesStore.loadLaunches()
   if (window.innerWidth >= 1024) {
     addScrollListeners()
   }
 })
 
-onUnmounted(removeScrollListeners)
+onUnmounted(() => {
+  removeScrollListeners()
+  launchesStore.clearLaunches()
+})
 </script>
 
 <template>
@@ -48,13 +43,18 @@ onUnmounted(removeScrollListeners)
     <CategoryFilter v-else />
 
     <div ref="boardRef" class="kanban-wrapper">
-      <LaunchCard
-        v-for="launch in launchesStore.filteredLaunches"
-        :key="launch.id"
-        :launch="launch"
-        :groupItemsByDate="groupItemsByDate"
-        :getWeekdayLabel="getWeekdayLabel"
-      />
+      <template v-if="launchesStore.isLoading">
+        <SkeletonCard v-for="n in 5" :key="n" />
+      </template>
+      <template v-else>
+        <LaunchCard
+          v-for="launch in launchesStore.filteredLaunches"
+          :key="launch.id"
+          :launch="launch"
+          :groupItemsByDate="groupItemsByDate"
+          :getWeekdayLabel="getWeekdayLabel"
+        />
+      </template>
     </div>
   </main>
 </template>
