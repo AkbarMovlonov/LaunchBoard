@@ -33,7 +33,7 @@ export const useLaunchesStore = defineStore('launches', {
       this.error = null
       try {
         const launches = await fetchLaunches()
-        await new Promise((resolve) => setTimeout(resolve, 1000)) // simulating delay for checking skeleton
+        await new Promise((resolve) => setTimeout(resolve, 500)) // simulating delay for checking skeleton
         this.launches = launches
       } catch (err) {
         this.error = err.message
