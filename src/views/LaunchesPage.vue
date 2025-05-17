@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { useLaunchesStore } from '@/stores/launchesStore'
 import { useRoute } from 'vue-router'
+import LaunchCard from '@/components/LaunchCard.vue'
 
 const launchesStore = useLaunchesStore()
 const route = useRoute()
@@ -103,10 +104,20 @@ let startX, scrollLeft
 function startDragScroll(event) {
   if (!boardRef.value) return
   isDragging = true
+  boardRef.value.classList.add('dragging')
   startX = event.pageX - boardRef.value.offsetLeft
   scrollLeft = boardRef.value.scrollLeft
   document.addEventListener('mousemove', onDragScroll)
   document.addEventListener('mouseup', stopDragScroll)
+}
+
+function stopDragScroll() {
+  isDragging = false
+  if (boardRef.value) {
+    boardRef.value.classList.remove('dragging')
+  }
+  document.removeEventListener('mousemove', onDragScroll)
+  document.removeEventListener('mouseup', stopDragScroll)
 }
 
 function onDragScroll(event) {
@@ -114,12 +125,6 @@ function onDragScroll(event) {
   const x = event.pageX - boardRef.value.offsetLeft
   const walk = (x - startX) * 1.5
   boardRef.value.scrollLeft = scrollLeft - walk
-}
-
-function stopDragScroll() {
-  isDragging = false
-  document.removeEventListener('mousemove', onDragScroll)
-  document.removeEventListener('mouseup', stopDragScroll)
 }
 </script>
 
@@ -146,66 +151,32 @@ function stopDragScroll() {
       </div>
 
       <div ref="boardRef" class="kanban-wrapper">
-        <div v-for="launch in launchesStore.filteredLaunches" :key="launch.id" class="kanban-card">
-          <div class="card-header">
-            <span class="card-title">{{ launch.name }}</span>
-            <span
-              v-if="launch.categories.length > 0"
-              class="card-badge"
-              :style="{ backgroundColor: launch.categories[0].color }"
-            >
-              {{ launch.categories[0].name }}
-            </span>
-          </div>
-
-          <div class="section start-time">
-            <div class="section-title">Старт групп</div>
-            <div v-for="(times, date) in groupItemsByDate(sortGroups(launch.groups))" :key="date">
-              <div class="section-subtitle">
-                <span>{{ formatDateToRussian(date) }}</span>
-                <span>{{
-                  formatWeekdays(launch.groups.find((g) => g.start_date === date)?.days)
-                }}</span>
-              </div>
-              <div class="time-column">
-                <div v-for="time in times" :key="time" class="time-item">
-                  {{ formatTime(time) }}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="section lessons">
-            <div class="section-title">Открытые уроки</div>
-            <div
-              v-for="(times, date) in groupItemsByDate(sortOpenLessons(launch.open_lessons))"
-              :key="date"
-              class="lesson"
-            >
-              <div class="section-subtitle">
-                <span>{{ formatDateToRussian(date) }}</span>
-                <span>{{ getWeekdayLabel(date) }}</span>
-              </div>
-              <div class="time-column">
-                <div v-for="time in times" :key="time" class="time-item">
-                  {{ formatTime(time) }}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <LaunchCard
+          v-for="launch in launchesStore.filteredLaunches"
+          :key="launch.id"
+          :launch="launch"
+          :groupItemsByDate="groupItemsByDate"
+          :getWeekdayLabel="getWeekdayLabel"
+        />
       </div>
     </main>
   </div>
 </template>
 
-<style scoped>
+<style>
 .page {
   display: flex;
   background-color: #f9faf5;
   font-family: 'Inter', sans-serif;
 }
-
+.dragging {
+  cursor: grabbing !important;
+}
+.kanban-wrapper {
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 .main {
   flex: 1;
 }
@@ -238,86 +209,6 @@ function stopDragScroll() {
   overflow-x: auto;
   cursor: grab;
   flex-wrap: nowrap;
-}
-
-.kanban-card {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-.card-header {
-  padding: 10px;
-  background: #f9faf5;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 74px;
-}
-
-.card-title {
-  color: #606060;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.card-badge {
-  background: #08977b;
-  color: white;
-  border-radius: 8px;
-  padding: 2px 8px;
-  font-size: 10px;
-}
-
-.section {
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-}
-
-.start-time {
-  background: #fff;
-  border-radius: 10% 10% 0% 0%;
-}
-
-.section-title {
-  margin-bottom: 12px;
-}
-
-.section-subtitle {
-  display: flex;
-  justify-content: space-between;
-  color: #606060;
-  font-size: 12px;
-  margin-bottom: 12px;
-}
-
-.time-column {
-  display: flex;
-  flex-direction: column;
-  background: #f9faf5;
-  border-radius: 12px;
-  border: 1px solid #f0f0f0;
-}
-
-.time-item {
-  padding: 10px;
-  font-size: 12px;
-  display: inline-block;
-}
-
-.time-item:not(:last-child) {
-  border-bottom: 1px solid #f0f0f0;
-}
-
-.lessons {
-  background: #eeecdc;
-  border-radius: 0% 0% 10% 10%;
-}
-
-.lesson:not(:last-child) {
-  margin-bottom: 12px;
 }
 
 .error {
