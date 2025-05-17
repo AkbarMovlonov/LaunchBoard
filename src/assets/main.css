@@ -27,7 +27,12 @@ div {
 
 html,
 body {
-  overflow-y: hidden;
   background-color: #f9faf5;
   font-family: 'Inter', sans-serif;
+}
+
+@media (min-width: 1023px) {
+  body {
+    overflow-y: hidden;
+  }
 }

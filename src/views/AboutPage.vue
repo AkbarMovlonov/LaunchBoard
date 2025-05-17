@@ -1,6 +1,5 @@
 <template>
   <div class="about-wrapper">
-    <h2 class="section-title">Обо мне</h2>
     <div class="profile-header">
       <img src="@/assets/img.webp" alt="Моя фотография" width="150" height="150" />
       <div>
@@ -35,9 +34,14 @@
 
 <style scoped>
 .about-wrapper {
-  width: calc(100vw - 200px);
+  width: 100vw;
   font-family: 'Inter', sans-serif;
   color: #000;
+}
+@media (min-width: 1023px) {
+  .about-wrapper {
+    width: calc(100vw - 200px);
+  }
 }
 
 .section-title {
@@ -53,7 +57,7 @@
   align-items: center;
   gap: 20px;
   margin-bottom: 30px;
-  padding: 0 20px;
+  padding: 20px 20px 0;
 }
 
 .profile-header img {
@@ -82,5 +86,8 @@
 .info-section p {
   margin-bottom: 10px;
   line-height: 1.5;
+}
+.info-section p:last-child {
+  padding-bottom: 20px;
 }
 </style>

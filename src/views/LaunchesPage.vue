@@ -31,14 +31,17 @@ watch(
 )
 
 // Lifecycle for scroll listeners
-onMounted(addScrollListeners)
+onMounted(() => {
+  if (window.innerWidth >= 1024) {
+    addScrollListeners()
+  }
+})
+
 onUnmounted(removeScrollListeners)
 </script>
 
 <template>
   <main class="main">
-    <h2 class="title">Запуски</h2>
-
     <h2 v-if="launchesStore.isLoading" class="title">Загрузка...</h2>
     <h2 v-else-if="launchesStore.error" class="title error">Ошибка: {{ launchesStore.error }}</h2>
 
@@ -59,9 +62,15 @@ onUnmounted(removeScrollListeners)
 <style>
 .main {
   flex: 1;
-  width: calc(100vw - 200px);
+  width: 100vw;
   overflow-x: auto;
 }
+@media (min-width: 1023px) {
+  .main {
+    width: calc(100vw - 200px);
+  }
+}
+
 .dragging {
   cursor: grabbing !important;
 }
@@ -105,5 +114,22 @@ onUnmounted(removeScrollListeners)
 
 .error {
   color: rgb(182, 25, 25);
+}
+@media (max-width: 1023px) {
+  .kanban-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+    max-width: 100%;
+    cursor: auto;
+  }
+
+  .kanban-card {
+    flex: 0 1 calc(50% - 10px); /* Two cards per row with gap */
+    max-width: calc(50% - 10px);
+    margin-bottom: 20px;
+  }
 }
 </style>
