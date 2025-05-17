@@ -89,4 +89,9 @@ defineProps({ isOpen: Boolean })
     transform: translateX(0);
   }
 }
+@media (max-width: 767px) {
+  .sidebar {
+    font-size: 1.5rem;
+  }
+}
 </style>

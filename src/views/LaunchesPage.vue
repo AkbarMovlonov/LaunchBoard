@@ -132,4 +132,24 @@ onUnmounted(removeScrollListeners)
     margin-bottom: 20px;
   }
 }
+@media (max-width: 767px) {
+  .kanban-wrapper {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  .kanban-card {
+    flex: 0 1 100%;
+    max-width: 100%;
+    margin-bottom: 10px;
+  }
+  .categories {
+    flex-wrap: wrap;
+  }
+  .main {
+    font-size: 1.4rem;
+  }
+}
 </style>

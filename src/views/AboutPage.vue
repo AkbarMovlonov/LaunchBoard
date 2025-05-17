@@ -1,7 +1,7 @@
 <template>
   <div class="about-wrapper">
     <div class="profile-header">
-      <img src="@/assets/img.webp" alt="Моя фотография" width="150" height="150" />
+      <img src="@/assets/img.webp" alt="Моя фотография" class="ava" />
       <div>
         <h3 class="name">Акбар Мовлонов</h3>
         <p>21 лет | 16 июля 2003 год</p>
@@ -60,6 +60,11 @@
   padding: 20px 20px 0;
 }
 
+.ava {
+  width: 200px;
+  height: 200px;
+}
+
 .profile-header img {
   border-radius: 50%;
   object-fit: cover;
@@ -89,5 +94,14 @@
 }
 .info-section p:last-child {
   padding-bottom: 20px;
+}
+@media (max-width: 767px) {
+  .ava {
+    width: 200px;
+    height: 200px;
+  }
+  .profile-header {
+    flex-direction: column;
+  }
 }
 </style>

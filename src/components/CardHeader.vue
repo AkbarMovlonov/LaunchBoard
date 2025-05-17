@@ -19,3 +19,15 @@ const props = defineProps({
   },
 })
 </script>
+
+<style>
+@media (max-width: 767px) {
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .card-title {
+    font-size: 1.2rem;
+  }
+}
+</style>

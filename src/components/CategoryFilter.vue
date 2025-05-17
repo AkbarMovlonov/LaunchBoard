@@ -34,7 +34,12 @@ function getButtonStyle(category) {
       :key="category.key"
       class="category"
       :style="getButtonStyle(category)"
-      @click="launchesStore.toggleCategory(category.key)"
+      @click="
+        () => {
+          launchesStore.toggleCategory(category.key)
+          hoveredKey = null // Reset hover state on click for mobile
+        }
+      "
       @mouseover="hoveredKey = category.key"
       @mouseleave="hoveredKey = null"
     >
@@ -62,13 +67,6 @@ function getButtonStyle(category) {
   border-radius: 25px;
   padding: 5px 10px;
   font-size: 14px;
-}
-.category {
-  background: #ededed;
-  border: none;
-  border-radius: 25px;
-  padding: 5px 10px;
-  font-size: 14px;
   cursor: pointer;
   transition:
     background-color 0.3s,
@@ -77,5 +75,14 @@ function getButtonStyle(category) {
 
 .category:hover {
   background: #dcdcdc;
+}
+@media (max-width: 767px) {
+  .categories h2 {
+    flex-basis: 100%;
+  }
+  .category {
+    padding: 4px 8px;
+    font-size: 13px;
+  }
 }
 </style>
